@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>to pw</title>
+<link rel="icon" type="image/svg+xml" href="browser-icon.svg">
+<style>
+  :root {
+    --bg: #fff6f8;
+    --text: #222;
+    --heart: #ff4d6d;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    background: var(--bg);
+    color: var(--text);
+    display: grid;
+    place-items: center;
+  }
+  .screen {
+    width: min(800px, 92vw);
+    text-align: center;
+    padding: 32px;
+    border-radius: 24px;
+    background: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,.07);
+    transition: opacity .4s ease, transform .4s ease, visibility .4s step-end;
+  }
+  .hidden {
+    opacity: 0;
+    transform: translateY(8px) scale(.98);
+    visibility: hidden;
+    position: absolute;
+    pointer-events: none;
+  }
+  h1 { margin: 0 0 5px }
+  p { margin: 0 0 24px }
+  button {
+    font-size: 1.1rem;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 999px;
+    background: var(--heart);
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(255,77,109,.25);
+    transition: transform .15s ease;
+  }
+  button:active { transform: translateY(1px); }
+.heart-container {
+  display: grid;
+  place-items: center;
+  margin-top: 2rem;
+}
+
+/* pop-in animation */
+.heart {
+  animation: pop 0.8s ease forwards, beat 1s ease-in-out infinite alternate;
+}
+
+@keyframes pop {
+  0%   { transform: scale(0); opacity: 0; }
+  70%  { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* heartbeat pulsing loop */
+@keyframes beat {
+  0%   { transform: scale(1); }
+  100% { transform: scale(1.1); }
+}
+</style>
+</head>
+<body>
+
+  <section id="screen1" class="screen">
+    <h1>💌</h1>
+    <p>I made a tiny surprise for you hehe.</p>
+    <button id="start">Click me</button>
+  </section>
+
+  <section id="screen2" class="screen hidden">
+    <h1>Happy Chinese Valentine's Day!</h1>
+    <div class="heart-container">
+        <object type="image/svg+xml" data="preview.svg" width="300" height="300" class="heart"></object>
+    </div>
+    <button id="again">Back</button>
+  </section>
+
+<script>
+  const screen1 = document.getElementById('screen1');
+  const screen2 = document.getElementById('screen2');
+  const startBtn = document.getElementById('start');
+  const againBtn = document.getElementById('again');
+  const heartWrap = document.getElementById('heartWrap');
+
+  function showScreen2() {
+    screen1.classList.add('hidden');
+    screen2.classList.remove('hidden');
+    // trigger pop animation
+    heartWrap.classList.remove('pop');
+    void heartWrap.offsetWidth; // reflow to restart animation if needed
+    heartWrap.classList.add('pop');
+  }
+
+  function backToStart() {
+    screen2.classList.add('hidden');
+    screen1.classList.remove('hidden');
+  }
+
+  startBtn.addEventListener('click', showScreen2);
+  againBtn.addEventListener('click', backToStart);
+</script>
+
+</body>
+</html>
